@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#f4e4d7">
+    <meta name="description" content="You're invited to our wedding! View details and RSVP.">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Our Wedding">
+    
+    <title>Our Wedding Invitation</title>
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="rings-icon">💍</div>
+            <h1 class="couple-names">Ranjith & Beryl</h1>
+            <p class="tagline">are getting married!</p>
+            <div class="date-badge">
+                <span class="date-day">Friday</span>
+                <span class="date-number">May 27, 2026</span>
+            </div>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <!-- Countdown Section -->
+    <section class="countdown-section">
+        <h2>Counting Down</h2>
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <span class="countdown-number" id="days">00</span>
+                <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="hours">00</span>
+                <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="minutes">00</span>
+                <span class="countdown-label">Minutes</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Venue Section -->
+    <section class="venue-section">
+        <h2>📍 Venue</h2>
+        <div class="venue-card">
+            <h3>Ranjith Mahal</h3>
+            <p class="venue-address">
+                RKKR Mahal<br>
+                Sirumugai, Coimbator 641697
+            </p>
+            <a href="https://share.google/RxCqs3ay6ziyt2EXV" target="_blank" class="btn btn-secondary">
+                🗺️ Open in Maps
+            </a>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section class="schedule-section">
+        <h2>⏰ Schedule</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-time">3:00 PM</div>
+                <div class="timeline-content">
+                    <h3>Ceremony</h3>
+                    <p>Join us as we exchange vows</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">4:30 PM</div>
+                <div class="timeline-content">
+                    <h3>Cocktail Hour</h3>
+                    <p>Drinks and hors d'oeuvres</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">6:00 PM</div>
+                <div class="timeline-content">
+                    <h3>Reception</h3>
+                    <p>Dinner, dancing, and celebration</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">11:00 PM</div>
+                <div class="timeline-content">
+                    <h3>Grand Finale</h3>
+                    <p>Send-off celebration</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP Section -->
+    <section class="rsvp-section">
+        <h2>Will You Join Us?</h2>
+        <p class="rsvp-subtitle">Please let us know by May 15, 2026</p>
+        
+        <div class="rsvp-form" id="rsvpForm">
+            <input type="text" id="guestName" placeholder="Your Full Name" class="input-field" required>
+            <input type="email" id="guestEmail" placeholder="Your Email (optional)" class="input-field">
+            <input type="tel" id="guestPhone" placeholder="Your Phone (optional)" class="input-field">
+            
+            <div class="guest-count">
+                <label for="guestNumber">Number of Guests:</label>
+                <div class="counter">
+                    <button type="button" class="counter-btn" id="decreaseGuests">−</button>
+                    <span class="counter-value" id="guestNumber">1</span>
+                    <button type="button" class="counter-btn" id="increaseGuests">+</button>
+                </div>
+            </div>
+
+            <div class="rsvp-buttons">
+                <button type="button" class="btn btn-primary" id="acceptBtn">
+                    ✓ Joyfully Accept
+                </button>
+                <button type="button" class="btn btn-decline" id="declineBtn">
+                    Regretfully Decline
+                </button>
+            </div>
+
+            <textarea id="specialRequests" placeholder="Dietary restrictions or special requests (optional)" class="input-field textarea-field"></textarea>
+        </div>
+
+        <div class="rsvp-success" id="rsvpSuccess" style="display: none;">
+            <div class="success-icon">✓</div>
+            <h3 id="successMessage">Thank you for your RSVP!</h3>
+            <p id="successDetails">We can't wait to celebrate with you!</p>
+        </div>
+    </section>
+
+    <!-- Additional Info Section -->
+    <section class="info-section">
+        <h2>💡 Good to Know</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-icon">👗</div>
+                <h3>Dress Code</h3>
+                <p>Semi-formal attire</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">🎁</div>
+                <h3>Registry</h3>
+                <p>Your presence is our present</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">📸</div>
+                <h3>Photos</h3>
+                <p>Share your photos with #SarahAndMichael2026</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">🚗</div>
+                <h3>Parking</h3>
+                <p>Free parking available on-site</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <h2>Questions?</h2>
+        <p>Feel free to reach out to us</p>
+        <a href="mailto:wedding@example.com" class="btn btn-secondary">📧 Email Us</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>We can't wait to celebrate with you! 💕</p>
+        <p class="footer-small">Sarah & Michael • June 15, 2026</p>
+    </footer>
+
+    <!-- Install Prompt (for PWA) -->
+    <div class="install-prompt" id="installPrompt" style="display: none;">
+        <div class="install-content">
+            <p>📱 Add to your home screen for quick access!</p>
+            <button class="btn btn-install" id="installBtn">Add to Home Screen</button>
+            <button class="btn-close" id="closeInstallPrompt">×</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
