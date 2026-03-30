@@ -99,22 +99,23 @@ function saveRSVPLocally(data) {
 }
 
 // ==================== //
-// Send RSVP via Formspree (Email Integration)
+// Send RSVP to Google Sheets
 // ==================== //
 // SETUP INSTRUCTIONS:
-// 1. Go to https://formspree.io and sign up (FREE)
-// 2. Create a new form
-// 3. Copy your form ID (looks like: xyzabc123)
-// 4. Replace 'YOUR_FORM_ID' below with your actual form ID
-// 5. RSVPs will be sent to your email automatically!
+// 1. Create a Google Sheet with columns: Timestamp, Name, Email, Phone, Attending, Guest Count, Special Requests
+// 2. Go to Extensions → Apps Script
+// 3. Paste the code from GOOGLE-SHEETS-SETUP.md
+// 4. Deploy as Web App
+// 5. Copy the deployment URL and paste it below
 // ==================== //
 async function sendRSVP(data) {
-    // IMPORTANT: Replace 'YOUR_FORM_ID' with your actual Formspree form ID
-    const FORMSPREE_FORM_ID = 'YOUR_FORM_ID'; // Get this from https://formspree.io
+    // IMPORTANT: Replace with your Google Apps Script Web App URL
+    const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL'; // Get this after deploying Apps Script
     
     try {
-        const response = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
+            mode: 'no-cors', // Required for Google Apps Script
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -122,33 +123,22 @@ async function sendRSVP(data) {
                 name: data.name,
                 email: data.email,
                 phone: data.phone,
-                attending: data.attending ? 'Yes ✓' : 'No ✗',
+                attending: data.attending,
                 guestCount: data.guestCount,
-                specialRequests: data.specialRequests || 'None',
-                timestamp: new Date(data.timestamp).toLocaleString('en-IN', { 
-                    timeZone: 'Asia/Kolkata',
-                    dateStyle: 'full',
-                    timeStyle: 'long'
-                }),
-                _subject: `Wedding RSVP from ${data.name}`,
-                _replyto: data.email || 'noreply@wedding.com'
+                specialRequests: data.specialRequests,
+                timestamp: data.timestamp
             })
         });
 
-        if (response.ok) {
-            console.log('✓ RSVP sent successfully via email');
-            return true;
-        } else {
-            console.error('✗ Error sending RSVP:', response.statusText);
-            return false;
-        }
+        // Note: no-cors mode doesn't allow reading the response
+        // But if we reach here without error, it likely succeeded
+        console.log('✓ RSVP sent to Google Sheets');
+        return true;
+        
     } catch (error) {
-        console.error('✗ Network error sending RSVP:', error);
+        console.error('✗ Error sending RSVP to Google Sheets:', error);
         return false;
     }
-    
-    // BACKUP: Log data for manual retrieval
-    console.log('RSVP Data (backup):', data);
 }
 
 function showSuccessMessage(attending, name) {
