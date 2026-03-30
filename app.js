@@ -1,10 +1,10 @@
 // ==================== //
 // Wedding Date Configuration
 // ==================== //
-const WEDDING_DATE = new Date('2026-06-15T15:00:00').getTime();
+const WEDDING_DATE = new Date('2026-05-29T18:00:00').getTime(); // 6:00 PM reception time
 
 // ==================== //
-// Countdown Timer
+// Countdown Timer (Dynamic - Updates Every Second)
 // ==================== //
 function updateCountdown() {
     const now = new Date().getTime();
@@ -24,9 +24,9 @@ function updateCountdown() {
     document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
 }
 
-// Update countdown every minute
+// Update countdown every second for real-time accuracy
 updateCountdown();
-setInterval(updateCountdown, 60000);
+setInterval(updateCountdown, 1000);
 
 // ==================== //
 // Guest Counter
@@ -51,7 +51,7 @@ document.getElementById('decreaseGuests').addEventListener('click', () => {
 // ==================== //
 // RSVP Functionality
 // ==================== //
-function handleRSVP(attending) {
+async function handleRSVP(attending) {
     const name = document.getElementById('guestName').value.trim();
     const email = document.getElementById('guestEmail').value.trim();
     const phone = document.getElementById('guestPhone').value.trim();
@@ -78,11 +78,16 @@ function handleRSVP(attending) {
     // Store RSVP locally
     saveRSVPLocally(rsvpData);
 
-    // Send RSVP (you can integrate with your backend here)
-    sendRSVP(rsvpData);
+    // Send RSVP to email
+    const success = await sendRSVP(rsvpData);
 
-    // Show success message
-    showSuccessMessage(attending, name);
+    if (success) {
+        // Show success message
+        showSuccessMessage(attending, name);
+    } else {
+        alert('There was an error sending your RSVP. Your response has been saved locally. Please contact us directly to confirm.');
+        showSuccessMessage(attending, name);
+    }
 }
 
 function saveRSVPLocally(data) {
@@ -93,39 +98,57 @@ function saveRSVPLocally(data) {
     }
 }
 
-function sendRSVP(data) {
-    // This is where you would send the RSVP to your backend
-    // For now, we'll log it and simulate sending
-    console.log('RSVP Data:', data);
+// ==================== //
+// Send RSVP via Formspree (Email Integration)
+// ==================== //
+// SETUP INSTRUCTIONS:
+// 1. Go to https://formspree.io and sign up (FREE)
+// 2. Create a new form
+// 3. Copy your form ID (looks like: xyzabc123)
+// 4. Replace 'YOUR_FORM_ID' below with your actual form ID
+// 5. RSVPs will be sent to your email automatically!
+// ==================== //
+async function sendRSVP(data) {
+    // IMPORTANT: Replace 'YOUR_FORM_ID' with your actual Formspree form ID
+    const FORMSPREE_FORM_ID = 'YOUR_FORM_ID'; // Get this from https://formspree.io
+    
+    try {
+        const response = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                attending: data.attending ? 'Yes ✓' : 'No ✗',
+                guestCount: data.guestCount,
+                specialRequests: data.specialRequests || 'None',
+                timestamp: new Date(data.timestamp).toLocaleString('en-IN', { 
+                    timeZone: 'Asia/Kolkata',
+                    dateStyle: 'full',
+                    timeStyle: 'long'
+                }),
+                _subject: `Wedding RSVP from ${data.name}`,
+                _replyto: data.email || 'noreply@wedding.com'
+            })
+        });
 
-    // Example: Send to a backend API
-    // fetch('https://your-backend.com/api/rsvp', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(data)
-    // })
-    // .then(response => response.json())
-    // .then(result => console.log('RSVP sent successfully:', result))
-    // .catch(error => console.error('Error sending RSVP:', error));
-
-    // Alternative: Send via email using a service like Formspree or EmailJS
-    // Or use Google Forms, Airtable, or similar services
-
-    // For demo purposes, we'll create a mailto link
-    const subject = `Wedding RSVP - ${data.name}`;
-    const body = `
-Name: ${data.name}
-Email: ${data.email}
-Phone: ${data.phone}
-Attending: ${data.attending ? 'Yes' : 'No'}
-Number of Guests: ${data.guestCount}
-Special Requests: ${data.specialRequests || 'None'}
-    `.trim();
-
-    // Uncomment to open email client
-    // window.location.href = `mailto:wedding@example.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        if (response.ok) {
+            console.log('✓ RSVP sent successfully via email');
+            return true;
+        } else {
+            console.error('✗ Error sending RSVP:', response.statusText);
+            return false;
+        }
+    } catch (error) {
+        console.error('✗ Network error sending RSVP:', error);
+        return false;
+    }
+    
+    // BACKUP: Log data for manual retrieval
+    console.log('RSVP Data (backup):', data);
 }
 
 function showSuccessMessage(attending, name) {
@@ -139,7 +162,7 @@ function showSuccessMessage(attending, name) {
 
     if (attending) {
         successMessage.textContent = `Thank you, ${name}! 🎉`;
-        successDetails.textContent = `We can't wait to celebrate with you on June 15, 2026!`;
+        successDetails.textContent = `We can't wait to celebrate with you on May 29, 2026!`;
     } else {
         successMessage.textContent = `Thank you for letting us know, ${name}.`;
         successDetails.textContent = `You'll be missed, but we understand. We hope to celebrate with you another time!`;
@@ -314,17 +337,68 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ==================== //
-// Scroll Indicator
+// Scroll Indicator with Haptic Feedback
 // ==================== //
 const scrollIndicator = document.querySelector('.scroll-indicator');
 if (scrollIndicator) {
     scrollIndicator.addEventListener('click', () => {
+        // Haptic feedback for mobile
+        if (navigator.vibrate) {
+            navigator.vibrate(10);
+        }
+        
         window.scrollTo({
             top: window.innerHeight,
             behavior: 'smooth'
         });
     });
+    
+    // Hide scroll indicator after scrolling
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 100 && scrollIndicator) {
+            scrollIndicator.style.opacity = '0';
+            scrollIndicator.style.pointerEvents = 'none';
+        } else if (scrollIndicator) {
+            scrollIndicator.style.opacity = '1';
+            scrollIndicator.style.pointerEvents = 'auto';
+        }
+    });
 }
+
+// ==================== //
+// Intersection Observer for Scroll Animations
+// ==================== //
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+// Observe all sections for scroll animations
+document.querySelectorAll('section').forEach(section => {
+    observer.observe(section);
+});
+
+// ==================== //
+// Add Ripple Effect to Buttons
+// ==================== //
+document.querySelectorAll('.btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        // Haptic feedback
+        if (navigator.vibrate) {
+            navigator.vibrate(10);
+        }
+    });
+});
 
 // ==================== //
 // Analytics (Optional)

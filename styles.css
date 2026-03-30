@@ -2,9 +2,9 @@
 /* CSS Variables & Reset */
 /* ==================== */
 :root {
-    --primary-color: #d4a574;
-    --secondary-color: #8b7355;
-    --accent-color: #f4e4d7;
+    --primary-color: #9c27b0;
+    --secondary-color: #7b1fa2;
+    --accent-color: #f3e5f5;
     --text-dark: #2c2c2c;
     --text-light: #666;
     --white: #ffffff;
@@ -20,6 +20,10 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     line-height: 1.6;
@@ -27,6 +31,8 @@ body {
     background: var(--white);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y;
 }
 
 /* ==================== */
@@ -99,6 +105,12 @@ body {
     font-size: 2rem;
     color: var(--primary-color);
     animation: bounce 2s infinite;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.scroll-indicator:active {
+    transform: scale(0.9);
 }
 
 /* ==================== */
@@ -108,7 +120,17 @@ section {
     padding: 4rem 1.5rem;
     max-width: 600px;
     margin: 0 auto;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
 }
+
+section:nth-child(1) { animation-delay: 0s; }
+section:nth-child(2) { animation-delay: 0.1s; }
+section:nth-child(3) { animation-delay: 0.2s; }
+section:nth-child(4) { animation-delay: 0.3s; }
+section:nth-child(5) { animation-delay: 0.4s; }
+section:nth-child(6) { animation-delay: 0.5s; }
 
 h2 {
     font-size: 2rem;
@@ -351,11 +373,33 @@ h2 {
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     text-decoration: none;
     display: inline-block;
     text-align: center;
     font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+    width: 300px;
+    height: 300px;
 }
 
 .btn-primary {
@@ -604,11 +648,65 @@ h2 {
 }
 
 /* ==================== */
+/* Mobile-First Enhancements */
+/* ==================== */
+.venue-card,
+.info-card,
+.countdown-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.venue-card:active,
+.info-card:active {
+    transform: scale(0.98);
+}
+
+.counter-btn {
+    touch-action: manipulation;
+}
+
+.input-field {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.input-field:focus {
+    transform: scale(1.02);
+    transition: all 0.3s ease;
+}
+
+/* Smooth scroll snap for sections */
+@supports (scroll-snap-type: y mandatory) {
+    body {
+        scroll-snap-type: y proximity;
+    }
+    
+    section {
+        scroll-snap-align: start;
+    }
+}
+
+/* Pull-to-refresh indicator */
+@media (hover: none) and (pointer: coarse) {
+    body {
+        overscroll-behavior-y: contain;
+    }
+}
+
+/* ==================== */
 /* Responsive Design */
 /* ==================== */
 @media (max-width: 480px) {
     .couple-names {
         font-size: 2.5rem;
+    }
+    
+    .hero {
+        min-height: 100svh;
+    }
+    
+    section {
+        padding: 3rem 1.25rem;
     }
     
     .countdown-item {
@@ -631,6 +729,15 @@ h2 {
         flex-direction: column;
         text-align: center;
     }
+    
+    .btn {
+        padding: 0.875rem 1.75rem;
+        font-size: 1rem;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+    }
 }
 
 @media (min-width: 768px) {
@@ -640,5 +747,42 @@ h2 {
     
     .rsvp-buttons {
         flex-direction: row;
+    }
+    
+    .hero {
+        min-height: 100vh;
+    }
+}
+
+/* ==================== */
+/* Dark Mode Support (Optional) */
+/* ==================== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-dark: #f0f0f0;
+        --text-light: #b0b0b0;
+        --white: #1a1a1a;
+        --accent-color: #2a2520;
+    }
+    
+    .hero {
+        background: linear-gradient(135deg, #2a2520 0%, #1a1510 100%);
+    }
+}
+
+/* ==================== */
+/* Reduced Motion Support */
+/* ==================== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    html {
+        scroll-behavior: auto;
     }
 }
