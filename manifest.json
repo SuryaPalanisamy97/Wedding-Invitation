@@ -4,8 +4,8 @@
   "description": "Wedding invitation and RSVP for Ranjith & Beryl's special day",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f3e5f5",
-  "theme_color": "#9c27b0",
+  "background_color": "#fff5e6",
+  "theme_color": "#d4145a",
   "orientation": "portrait-primary",
   "icons": [
     {
