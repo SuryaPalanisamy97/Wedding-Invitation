@@ -311,7 +311,7 @@ body {
 /* Scroll-reveal couple names */
 .scroll-reveal-names {
     position: absolute;
-    top: 491px;
+    top: 503px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -1452,7 +1452,7 @@ h2 {
     }
 
     .hero-center-content {
-        top: 27%;
+        top: 17%;
     }
 
     .rsvp-buttons {
