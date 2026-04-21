@@ -128,11 +128,7 @@ body {
 
 .hero-bg-image {
     position: absolute;
-    left: 1px;
-    top: -29px;
-    right: 0;
-    bottom: 0;
-    height: 980px;
+    inset: 0;
     background-image: url('assets/landing-bg.png');
     background-size: contain;
     background-position: center;
@@ -251,12 +247,15 @@ body {
 /* Center content overlay */
 .hero-center-content {
     position: absolute;
-    top: 320px;
+    top: 280px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
     text-align: center;
     pointer-events: none;
+    width: 100%;
+    max-width: 600px;
+    padding: 0 1.5rem;
 }
 
 .hero-invitation-text {
@@ -312,7 +311,7 @@ body {
 /* Scroll-reveal couple names */
 .scroll-reveal-names {
     position: absolute;
-    bottom: 12vh;
+    top: 491px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -320,6 +319,7 @@ body {
     opacity: 0;
     transition: opacity 0.8s ease, transform 0.8s ease;
     pointer-events: none;
+    padding: 0 1rem;
 }
 
 .scroll-reveal-names.visible {
@@ -427,9 +427,10 @@ body {
 .invitation-card-section {
     background: var(--temple-teal);
     position: relative;
-    padding: 5rem 1.5rem;
+    padding: 4rem 1.5rem;
     text-align: center;
     overflow: hidden;
+    margin-top: 0;
 }
 
 .invitation-card-section::before {
@@ -1376,7 +1377,7 @@ h2 {
     }
 
     .scroll-reveal-names {
-        bottom: 10vh;
+        bottom: 6vh;
     }
 
     .invitation-couple-names {
@@ -1451,7 +1452,7 @@ h2 {
     }
 
     .hero-center-content {
-        top: 45%;
+        top: 27%;
     }
 
     .rsvp-buttons {
