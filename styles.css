@@ -130,7 +130,7 @@ body {
     position: absolute;
     inset: 0;
     background-image: url('assets/landing-bg.png');
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-color: #2d1b69;
@@ -247,7 +247,7 @@ body {
 /* Center content overlay */
 .hero-center-content {
     position: absolute;
-    top: 25%;
+    top: 12%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -1356,24 +1356,24 @@ h2 {
 /* ==================== */
 @media (max-width: 480px) {
     .hero-center-content {
-        top: 22%;
+        top: 10%;
     }
 
     .hero-invitation-text {
-        font-size: 0.8rem;
-        letter-spacing: 4px;
+        font-size: 0.75rem;
+        letter-spacing: 3px;
     }
 
     .date-badge {
-        padding: 0.8rem 1.5rem;
+        padding: 0.7rem 1.3rem;
     }
 
     .date-number {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 
     .scroll-reveal-names {
-        top: 48%;
+        top: 50%;
     }
 
     .couple-names-reveal {
@@ -1457,7 +1457,7 @@ h2 {
 
 @media (min-width: 768px) {
     .hero-center-content {
-        top: 24%;
+        top: 15%;
     }
 
     .scroll-reveal-names {
