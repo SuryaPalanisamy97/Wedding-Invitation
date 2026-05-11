@@ -1,7 +1,7 @@
 // ==================== //
 // Wedding Date Configuration
 // ==================== //
-const WEDDING_DATE = new Date('2026-05-29T18:00:00').getTime(); // 6:00 PM reception time
+const WEDDING_DATE = new Date('2026-05-29T19:00:00').getTime(); // 7:00 PM reception time
 
 // ==================== //
 // Countdown Timer (Dynamic - Updates Every Second)
